@@ -19,7 +19,37 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define QC_PID_H
 
 #include "config.h"
+#include "global.h"
 
+class PID
+{
+    public:
+        PID();
+        ~PID();
+
+        void setGains(float kp_arg, float ki_arg, float kd_arg);
+        void setiTermLimit(float iTermLimit_arg);
+        void zeroErrorIntegral();
+
+        float compute(float target, float is);
+
+        float getErrorIntegral();
+
+    private:
+
+        //time between 2 calls of the filter
+        float dT;
+
+        //gains for P,I,D
+        float kp, ki, kd;
+
+        //needed for I
+        float errorIntegral;
+        float iTermLimit; //integral wind-up security
+
+        //needed for D
+        float lastError;
+};
 
 
 #endif
